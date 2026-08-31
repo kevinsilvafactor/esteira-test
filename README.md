@@ -1,37 +1,21 @@
-# esteira-test
+# Encurtador de URL
 
-Encurtador de URL construído de ponta a ponta pela esteira do Factor OS.
-Este repositório é o alvo do projeto de validação — o código é escrito pelos agentes.
+Fundação de persistência SQLite para o serviço de links curtos.
 
-## Stack
+## Configuração
 
-- **Runtime:** Node.js 22, TypeScript (ESM)
-- **HTTP:** Fastify
-- **Persistência:** SQLite via `better-sqlite3`, arquivo único no diretório do projeto
-- **Testes:** Vitest
-- **Qualidade:** ESLint + `tsc --noEmit`
+- `DATABASE_PATH`: caminho do arquivo SQLite (padrão: `data/links.db`).
+- `SHORT_BASE_URL`: base para URLs curtas (padrão: `http://localhost:3000`); barras finais são removidas.
 
-## Layout
+As migrações são versionadas, idempotentes e aplicadas antes do tráfego. Datas são armazenadas em ISO 8601 UTC. A tabela `links` mantém `code` único, URL original, criação e o campo `deleted_at` reservado para a evolução de desativação.
 
-```
-src/          código da aplicação
-src/db/       schema e migrações
-test/         testes
-```
+## Desenvolvimento
 
-## Gates
-
-Os três precisam passar antes de qualquer PR:
-
-```bash
-npm run lint        # eslint
-npm run typecheck   # tsc --noEmit
-npm test            # vitest
+```sh
+npm install
+npm run lint
+npm run typecheck
+npm test
 ```
 
-## Convenções
-
-- Todo comportamento novo entra com teste.
-- Uma branch por spec; PR contra a feature-branch do plano, nunca direto na `main`.
-- Migração de schema é versionada em `src/db/` e aplicada na subida do serviço.
-- Sem dependência que exija serviço externo em execução.
+A API HTTP será adicionada na próxima fatia; esta implementação fornece a configuração, ciclo de vida SQLite, migração e repositório de persistência.

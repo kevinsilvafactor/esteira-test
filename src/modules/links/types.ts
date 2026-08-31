@@ -1,0 +1,13 @@
+export interface Link {
+  id: number
+  code: string
+  originalUrl: string
+  createdAt: string
+  deletedAt: string | null
+}
+
+export interface CreateLinkInput {
+  code: string
+  originalUrl: string
+  createdAt: string
+}
